@@ -2,6 +2,8 @@ let round = 0;
 let tries = 0;
 let score = 0;
 
+let difficulty = 'easy'
+
 function roundUp() {
     round++;
    document.getElementById('round').textContent = round.toString();
@@ -13,11 +15,13 @@ function triesUp() {
 
 }
 
-const game = async () => {
-    //https://opentdb.com/api.php?amount=10&category=25&difficulty=easy&type=multiple
+const setQuestion = async () => {
+    //https://opentdb.com/api.php?amount=1&category=25&difficulty=easy&type=multiple
     //https://opentdb.com/api_category.php
     let categories = [];
-    const data = await fetch('https://opentdb.com/api.php?amount=10&difficulty=easy&type=multiple')
+    let answers = [];
+
+    const data = await fetch(`https://opentdb.com/api.php?amount=1&difficulty=${difficulty}&type=multiple`)
         .then((response) => {
             console.log('response: ', response);
             if (response.status !== 200) {
@@ -26,34 +30,104 @@ const game = async () => {
             return response.json();
         });
 
+
+
+
     data.results.forEach((cat) =>{
         const div = document.getElementById('div');
         const pTag = document.createElement('p');
         div.appendChild(pTag);
-        pTag.innerHTML = cat.category;
+        pTag.innerHTML = 'Category: ' +  cat.category;
         categories.push(cat.category);
-        console.log(data.results[0]);
+        console.log(cat.correct_answer);
+        answers.push(cat.correct_answer);
+        cat.incorrect_answers.forEach((inAnswer) => {
+            answers.push(inAnswer)
+        });
+        shuffleAnswers(answers)
+        //console.log(data.results[0]);
+        console.log(answers);
         // console.log(cat);
-    })
+
+        let question = document.createElement('p')
+        question.id = 'question';
+        question.innerHTML = `${data.results[0].question}`
+        div.appendChild(question)
+
+        let answerOneButton = document.createElement('input');
+        answerOneButton.type = 'radio'
+        let answerOneLabel = document.createElement('label')
+        answerOneLabel.innerText = `${answers[0]}`
+        answerOneButton.value = `${answers[0]}`
+        answerOneButton.id = 'answerOneButton';
+
+        let answerTwoButton = document.createElement('input');
+        answerTwoButton.type = 'radio';
+        let answerTwoLabel = document.createElement('label')
+        answerTwoLabel.innerText = `${answers[1]}`
+        answerTwoButton.value = `${answers[1]}`
+
+        let answerThreeButton = document.createElement('input');
+        answerThreeButton.type = 'radio'
+        let answerThreeLabel = document.createElement('label')
+        answerThreeLabel.innerText = `${answers[2]}`
+        answerThreeButton.value = `${answers[2]}`
+
+        let answerFourButton = document.createElement('input');
+        answerFourButton.type = 'radio'
+        let answerFourLabel = document.createElement('label')
+        answerFourLabel.innerText = `${answers[3]}`
+        answerFourButton.value = `${answers[3]}`
 
 
-     do {
-         let question = document.createElement('p')
-         question.innerHTML = `${data.results[0].question}`
-         let answerOneButton = document.createElement('input');
-         div.appendChild(question)
-         answerOneButton.type = 'radio'
-         answerOneButton.value = `${data.results[0].correct_answer}`
-         div.appendChild(answerOneButton);
+
+
+        div.appendChild(answerOneButton);
+        div.appendChild(answerOneLabel);
+
+        div.appendChild(answerTwoButton);
+        div.appendChild(answerTwoLabel);
+
+        div.appendChild(answerThreeButton);
+        div.appendChild(answerThreeLabel);
+
+        div.appendChild(answerFourButton);
+        div.appendChild(answerFourLabel);
 
 
 
-     }while (tries >= 3 || round >= 15)
+
+
+
+    });
+
 
 
 }
 
 
+
+
+
+function game(){
+
+    setQuestion()
+
+
+
+
+    do {
+        
+
+    } while (round >= 15)
+
+
+
+
+
+
+
+}
 
 const Menu = async () => {
 
@@ -88,4 +162,37 @@ const Menu = async () => {
 function scoreUp(round, score){
     let calcScore = score * round;
     return calcScore
+}
+
+function checkAnswer(guess, answer){
+
+    if(guess === answer){
+        scoreUp()
+        roundUp()
+        setQuestion()
+    } else {
+        tries++;
+        setQuestion()
+    }
+
+
+
+}
+
+function shuffleAnswers(array) {
+    let currentIndex = array.length,  randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
 }
