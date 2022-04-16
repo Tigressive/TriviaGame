@@ -7,6 +7,7 @@ let difficulty = 'easy'
 function roundUp() {
     round++;
    document.getElementById('round').textContent = round.toString();
+   setQuestion()
 
 }
 
@@ -36,17 +37,18 @@ const setQuestion = async () => {
     data.results.forEach((cat) =>{
         const div = document.getElementById('div');
         const pTag = document.createElement('p');
+        pTag.id = 'round'
         div.appendChild(pTag);
         pTag.innerHTML = 'Category: ' +  cat.category;
         categories.push(cat.category);
-        console.log(cat.correct_answer);
+        //console.log(cat.correct_answer);
         answers.push(cat.correct_answer);
         cat.incorrect_answers.forEach((inAnswer) => {
             answers.push(inAnswer)
         });
         shuffleAnswers(answers)
         //console.log(data.results[0]);
-        console.log(answers);
+        //console.log(answers);
         // console.log(cat);
 
         let question = document.createElement('p')
@@ -54,30 +56,37 @@ const setQuestion = async () => {
         question.innerHTML = `${data.results[0].question}`
         div.appendChild(question)
 
-        let answerOneButton = document.createElement('input');
-        answerOneButton.type = 'radio'
+        let answerOneButton = document.createElement('button');
+        answerOneButton.textContent = 'A'
         let answerOneLabel = document.createElement('label')
         answerOneLabel.innerText = `${answers[0]}`
         answerOneButton.value = `${answers[0]}`
         answerOneButton.id = 'answerOneButton';
+        answerOneLabel.id = 'answerOneLabel'
 
-        let answerTwoButton = document.createElement('input');
-        answerTwoButton.type = 'radio';
+        let answerTwoButton = document.createElement('button');
+        answerTwoButton.textContent = 'B'
         let answerTwoLabel = document.createElement('label')
         answerTwoLabel.innerText = `${answers[1]}`
         answerTwoButton.value = `${answers[1]}`
+        answerTwoButton.id = 'answerTwoButton';
+        answerTwoLabel.id = 'answerTwoLabel'
 
-        let answerThreeButton = document.createElement('input');
-        answerThreeButton.type = 'radio'
+        let answerThreeButton = document.createElement('button');
+        answerThreeButton.textContent = 'C'
         let answerThreeLabel = document.createElement('label')
         answerThreeLabel.innerText = `${answers[2]}`
         answerThreeButton.value = `${answers[2]}`
+        answerThreeButton.id = 'answerThreeButton'
+        answerThreeLabel.id = 'answerThreeLabel'
 
-        let answerFourButton = document.createElement('input');
-        answerFourButton.type = 'radio'
+        let answerFourButton = document.createElement('button');
+        answerFourButton.textContent = 'D'
         let answerFourLabel = document.createElement('label')
         answerFourLabel.innerText = `${answers[3]}`
         answerFourButton.value = `${answers[3]}`
+        answerFourButton.id = 'answerFourButton';
+        answerFourLabel.id = 'answerFourLabel'
 
 
 
@@ -94,14 +103,9 @@ const setQuestion = async () => {
         div.appendChild(answerFourButton);
         div.appendChild(answerFourLabel);
 
-
-
-
-
-
     });
 
-
+    game(data)
 
 }
 
@@ -109,18 +113,60 @@ const setQuestion = async () => {
 
 
 
-function game(){
+function game(data){
 
-    setQuestion()
+    let guess1 = document.getElementById('answerOneButton');
+    let guess2 = document.getElementById('answerTwoButton');
+    let guess3 = document.getElementById('answerThreeButton');
+    let guess4 = document.getElementById('answerFourButton');
+
+    let guess1Label = document.getElementById('answerOneButton');
+    let guess2Label = document.getElementById('answerTwoButton');
+    let guess3Label = document.getElementById('answerThreeButton');
+    let guess4Label = document.getElementById('answerFourButton');
 
 
 
 
-    do {
-        
 
-    } while (round >= 15)
 
+
+
+
+
+
+        guess1.onclick = function (){
+            console.log(guess1.value)
+            if(guess1.value === data.results[0].correct_answer){
+                console.log('hellop')
+                roundUp()
+            }
+
+        }
+
+        guess2.onclick = function (){
+            if(guess2.value === data.results[0].correct_answer){
+                console.log('hellop')
+                roundUp()
+            }
+
+        }
+
+        guess3.onclick = function (){
+            if(guess3.value === data.results[0].correct_answer){
+                console.log('hellop')
+                roundUp()
+            }
+
+        }
+
+        guess4.onclick = function (){
+            if(guess4.value === data.results[0].correct_answer){
+                console.log('hellop')
+                roundUp()
+            }
+
+        }
 
 
 
@@ -164,20 +210,6 @@ function scoreUp(round, score){
     return calcScore
 }
 
-function checkAnswer(guess, answer){
-
-    if(guess === answer){
-        scoreUp()
-        roundUp()
-        setQuestion()
-    } else {
-        tries++;
-        setQuestion()
-    }
-
-
-
-}
 
 function shuffleAnswers(array) {
     let currentIndex = array.length,  randomIndex;
