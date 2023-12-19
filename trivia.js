@@ -6,8 +6,8 @@ let difficulty = 'easy'
 
 function roundUp() {
     round++;
-   document.getElementById('round').textContent = round.toString();
-   setQuestion()
+    document.getElementById('round').textContent = round.toString();
+    setQuestion()
 
 }
 
@@ -32,14 +32,12 @@ const setQuestion = async () => {
         });
 
 
-
-
-    data.results.forEach((cat) =>{
+    data.results.forEach((cat) => {
         const div = document.getElementById('div');
         const pTag = document.createElement('p');
         pTag.id = 'round'
         div.appendChild(pTag);
-        pTag.innerHTML = 'Category: ' +  cat.category;
+        pTag.innerHTML = 'Category: ' + cat.category;
         categories.push(cat.category);
         //console.log(cat.correct_answer);
         answers.push(cat.correct_answer);
@@ -89,8 +87,6 @@ const setQuestion = async () => {
         answerFourLabel.id = 'answerFourLabel'
 
 
-
-
         div.appendChild(answerOneButton);
         div.appendChild(answerOneLabel);
 
@@ -110,10 +106,7 @@ const setQuestion = async () => {
 }
 
 
-
-
-
-function game(data){
+function game(data) {
 
     let guess1 = document.getElementById('answerOneButton');
     let guess2 = document.getElementById('answerTwoButton');
@@ -126,51 +119,38 @@ function game(data){
     let guess4Label = document.getElementById('answerFourButton');
 
 
-
-
-
-
-
-
-
-
-
-        guess1.onclick = function (){
-            console.log(guess1.value)
-            if(guess1.value === data.results[0].correct_answer){
-                console.log('hellop')
-                roundUp()
-            }
-
+    guess1.onclick = function () {
+        console.log(guess1.value)
+        if (guess1.value === data.results[0].correct_answer) {
+            console.log('hellop')
+            roundUp()
         }
 
-        guess2.onclick = function (){
-            if(guess2.value === data.results[0].correct_answer){
-                console.log('hellop')
-                roundUp()
-            }
+    }
 
+    guess2.onclick = function () {
+        if (guess2.value === data.results[0].correct_answer) {
+            console.log('hellop')
+            roundUp()
         }
 
-        guess3.onclick = function (){
-            if(guess3.value === data.results[0].correct_answer){
-                console.log('hellop')
-                roundUp()
-            }
+    }
 
+    guess3.onclick = function () {
+        if (guess3.value === data.results[0].correct_answer) {
+            console.log('hellop')
+            roundUp()
         }
 
-        guess4.onclick = function (){
-            if(guess4.value === data.results[0].correct_answer){
-                console.log('hellop')
-                roundUp()
-            }
+    }
 
+    guess4.onclick = function () {
+        if (guess4.value === data.results[0].correct_answer) {
+            console.log('hellop')
+            roundUp()
         }
 
-
-
-
+    }
 
 
 }
@@ -205,14 +185,14 @@ const Menu = async () => {
 }
 
 
-function scoreUp(round, score){
+function scoreUp(round, score) {
     let calcScore = score * round;
     return calcScore
 }
 
 
 function shuffleAnswers(array) {
-    let currentIndex = array.length,  randomIndex;
+    let currentIndex = array.length, randomIndex;
 
     // While there remain elements to shuffle.
     while (currentIndex != 0) {
@@ -222,8 +202,7 @@ function shuffleAnswers(array) {
         currentIndex--;
 
         // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
 
     return array;
